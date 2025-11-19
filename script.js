@@ -9,12 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const stopButton = document.getElementById('stop-button');
     const timerDisplay = document.getElementById('timer-display');
     const timerNotes = document.getElementById('timer-notes');
+    const themeToggle = document.getElementById('theme-toggle');
 
     // State
     let selectedDuration = 0;
     let timerInterval;
     let endTime;
     let wakeLock = null;
+
+    // Theme Logic
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
 
     // Event Listeners
 

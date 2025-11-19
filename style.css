@@ -17,6 +17,16 @@
     sans-serif;
 }
 
+[data-theme="dark"] {
+  --bg-color: #111827; /* Gray 900 */
+  --surface-color: #1f2937; /* Gray 800 */
+  --text-main: #f9fafb; /* Gray 50 */
+  --text-secondary: #9ca3af; /* Gray 400 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -65,6 +75,52 @@ body {
   opacity: 1;
   pointer-events: auto;
   transform: scale(1);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  background: var(--surface-color);
+  border: 1px solid var(--text-secondary);
+  color: var(--text-main);
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.theme-toggle svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Show Moon by default (assuming light mode), hide Sun */
+.theme-toggle .sun-icon {
+  display: none;
+}
+.theme-toggle .moon-icon {
+  display: block;
+}
+
+/* In dark mode, show Sun, hide Moon */
+[data-theme="dark"] .theme-toggle .sun-icon {
+  display: block;
+}
+[data-theme="dark"] .theme-toggle .moon-icon {
+  display: none;
 }
 
 /* Typography */
