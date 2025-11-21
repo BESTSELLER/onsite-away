@@ -51,12 +51,19 @@ document.addEventListener('DOMContentLoaded', () => {
     chips.forEach(chip => {
         chip.addEventListener('click', () => {
             const text = chip.dataset.text;
-            // Toggle selection visual (optional, but nice)
-            chips.forEach(c => c.classList.remove('selected'));
-            chip.classList.add('selected');
 
-            // Set input value
-            notesInput.value = text;
+            // Check if already selected
+            if (chip.classList.contains('selected')) {
+                chip.classList.remove('selected');
+                notesInput.value = '';
+            } else {
+                // Deselect others
+                chips.forEach(c => c.classList.remove('selected'));
+                // Select clicked
+                chip.classList.add('selected');
+                // Set input value
+                notesInput.value = text;
+            }
         });
     });
 
@@ -68,7 +75,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const notes = notesInput.value;
+        const notes = notesInput.value.trim();
+
+        if (!notes) {
+            alert('Please enter a message or select a quick note.');
+            return;
+        }
+
         startTimer(selectedDuration, notes);
     });
 
