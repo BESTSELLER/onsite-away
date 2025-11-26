@@ -224,11 +224,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function createSnowflake() {
         const snowflake = document.createElement('div');
         snowflake.classList.add('snowflake');
-        snowflake.innerHTML = '❄';
+        snowflake.innerHTML = ['❄', '❅', '❆'][Math.floor(Math.random() * 3)];
         snowflake.style.left = Math.random() * 100 + 'vw';
         snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5s
         snowflake.style.opacity = Math.random();
-        snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+        snowflake.style.fontSize = Math.random() * 15 + 10 + 'px';
+
+        // Random horizontal movement
+        const randomX = Math.random() * 20 - 10;
+        snowflake.style.setProperty('--random-x', `${randomX}px`);
 
         document.body.appendChild(snowflake);
 
@@ -241,5 +245,5 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isChristmas) {
             createSnowflake();
         }
-    }, 100);
+    }, 50); // More frequent snow
 });
