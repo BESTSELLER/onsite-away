@@ -25,6 +25,28 @@ document.addEventListener('DOMContentLoaded', () => {
         document.documentElement.setAttribute('data-theme', 'dark');
     }
 
+    // Christmas Mode Check
+    let isChristmas = new Date().getMonth() === 11; // 11 is December
+
+    function updateChristmasState() {
+        if (isChristmas) {
+            document.body.classList.add('christmas-theme');
+        } else {
+            document.body.classList.remove('christmas-theme');
+            // Remove any existing snowflakes
+            document.querySelectorAll('.snowflake').forEach(el => el.remove());
+        }
+    }
+
+    updateChristmasState();
+
+    // Debug Toggle
+    window.toggleChristmasTheme = () => {
+        isChristmas = !isChristmas;
+        updateChristmasState();
+        console.log(`Christmas Theme: ${isChristmas ? 'ON' : 'OFF'}`);
+    };
+
     themeToggle.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -197,4 +219,31 @@ document.addEventListener('DOMContentLoaded', () => {
     function activatePartyMode() {
         document.body.classList.toggle('party-mode');
     }
+
+    // Snow Effect
+    function createSnowflake() {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.innerHTML = ['❄', '❅', '❆'][Math.floor(Math.random() * 3)];
+        snowflake.style.left = Math.random() * 100 + 'vw';
+        snowflake.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5s
+        snowflake.style.opacity = Math.random();
+        snowflake.style.fontSize = Math.random() * 15 + 10 + 'px';
+
+        // Random horizontal movement
+        const randomX = Math.random() * 20 - 10;
+        snowflake.style.setProperty('--random-x', `${randomX}px`);
+
+        document.body.appendChild(snowflake);
+
+        setTimeout(() => {
+            snowflake.remove();
+        }, 5000);
+    }
+
+    setInterval(() => {
+        if (isChristmas) {
+            createSnowflake();
+        }
+    }, 50); // More frequent snow
 });
