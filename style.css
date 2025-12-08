@@ -97,6 +97,7 @@ body.christmas-theme {
   width: 100%;
   height: 100%;
   padding: 2rem;
+  padding-top: max(2rem, env(safe-area-inset-top) + 1rem);
   display: flex;
   flex-direction: column;
   justify-content: center;

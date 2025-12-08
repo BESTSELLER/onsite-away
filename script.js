@@ -30,13 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateThemeColor() {
         const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-        if (!metaThemeColor) return;
+        const metaAppleStatus = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
 
         if (isChristmas) {
-            metaThemeColor.setAttribute('content', '#165b33');
+            if (metaThemeColor) metaThemeColor.setAttribute('content', '#165b33');
+            if (metaAppleStatus) metaAppleStatus.setAttribute('content', 'black-translucent');
         } else {
             const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-            metaThemeColor.setAttribute('content', isDark ? '#111827' : '#f5f7fa');
+            if (metaThemeColor) metaThemeColor.setAttribute('content', isDark ? '#111827' : '#f5f7fa');
+            if (metaAppleStatus) metaAppleStatus.setAttribute('content', isDark ? 'black-translucent' : 'default');
         }
     }
 
