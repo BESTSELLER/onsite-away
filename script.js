@@ -28,6 +28,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Christmas Mode Check
     let isChristmas = new Date().getMonth() === 11; // 11 is December
 
+    function updateThemeColor() {
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+        if (!metaThemeColor) return;
+
+        if (isChristmas) {
+            metaThemeColor.setAttribute('content', '#165b33');
+        } else {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            metaThemeColor.setAttribute('content', isDark ? '#111827' : '#f5f7fa');
+        }
+    }
+
     function updateChristmasState() {
         if (isChristmas) {
             document.body.classList.add('christmas-theme');
@@ -36,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Remove any existing snowflakes
             document.querySelectorAll('.snowflake').forEach(el => el.remove());
         }
+        updateThemeColor();
     }
 
     updateChristmasState();
@@ -53,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
+        updateThemeColor();
     });
 
     // Event Listeners
