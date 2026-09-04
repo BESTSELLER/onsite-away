@@ -2,7 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Elements
     const configScreen = document.getElementById('config-screen');
     const timerScreen = document.getElementById('timer-screen');
-    const durationCards = document.querySelectorAll('.duration-card');
+    const durationCards = document.querySelectorAll('.duration-grid .duration-card');
+    const customCard = document.getElementById('custom-duration-card');
+    const customModal = document.getElementById('custom-timer-modal');
+    const minutesPicker = document.getElementById('minutes-picker');
+    const customCancelButton = document.getElementById('custom-cancel-button');
+    const customConfirmButton = document.getElementById('custom-confirm-button');
     const notesInput = document.getElementById('notes-input');
     const chips = document.querySelectorAll('.chip');
     const startButton = document.getElementById('start-button');
@@ -13,9 +18,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // State
     let selectedDuration = 0;
+    let pickerScrollTimeout;
+    let pendingCustomMinutes = 20;
     let timerInterval;
     let endTime;
     let wakeLock = null;
+
+    // Custom duration picker setup
+    const PICKER_MIN = 1;
+    const PICKER_MAX = 180;
+    const ITEM_HEIGHT = 48;
+
+    for (let m = PICKER_MIN; m <= PICKER_MAX; m++) {
+        const item = document.createElement('div');
+        item.classList.add('picker-item');
+        item.dataset.value = m;
+        item.textContent = m;
+        minutesPicker.appendChild(item);
+    }
+
+    function scrollPickerToValue(value, smooth) {
+        const index = value - PICKER_MIN;
+        minutesPicker.scrollTo({ top: index * ITEM_HEIGHT, behavior: smooth ? 'smooth' : 'auto' });
+    }
+
+    function highlightPickerValue(value) {
+        minutesPicker.querySelectorAll('.picker-item').forEach(el => {
+            el.classList.toggle('picker-item-selected', parseInt(el.dataset.value, 10) === value);
+        });
+    }
+
+    minutesPicker.addEventListener('scroll', () => {
+        clearTimeout(pickerScrollTimeout);
+        pickerScrollTimeout = setTimeout(() => {
+            const index = Math.round(minutesPicker.scrollTop / ITEM_HEIGHT);
+            pendingCustomMinutes = Math.min(PICKER_MAX, Math.max(PICKER_MIN, index + PICKER_MIN));
+            highlightPickerValue(pendingCustomMinutes);
+        }, 100);
+    });
+
+    function openCustomModal() {
+        customModal.classList.add('active');
+        scrollPickerToValue(pendingCustomMinutes, false);
+        highlightPickerValue(pendingCustomMinutes);
+    }
+
+    function closeCustomModal() {
+        customModal.classList.remove('active');
+    }
+
+    function resetCustomCard() {
+        customCard.classList.remove('selected');
+        customCard.querySelector('.custom-card-label').textContent = 'Custom';
+    }
+
+    customCard.addEventListener('click', openCustomModal);
+    customCancelButton.addEventListener('click', closeCustomModal);
+    customConfirmButton.addEventListener('click', () => {
+        selectedDuration = pendingCustomMinutes;
+        durationCards.forEach(c => c.classList.remove('selected'));
+        customCard.classList.add('selected');
+        customCard.querySelector('.custom-card-label').textContent = `${pendingCustomMinutes}m`;
+        closeCustomModal();
+    });
 
     // Theme Logic
     const savedTheme = localStorage.getItem('theme');
@@ -78,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.addEventListener('click', () => {
             // Remove selected class from all
             durationCards.forEach(c => c.classList.remove('selected'));
+            resetCustomCard();
             // Add to clicked
             card.classList.add('selected');
             // Update state
@@ -184,6 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(timerInterval);
                 timerDisplay.textContent = "00:00";
                 releaseWakeLock();
+                resetCustomCard();
                 // Optional: Play sound
                 return;
             }
@@ -195,6 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function stopTimer() {
         clearInterval(timerInterval);
         releaseWakeLock();
+        resetCustomCard();
 
         // Switch screens
         timerScreen.classList.remove('active');

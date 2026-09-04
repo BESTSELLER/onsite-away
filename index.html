@@ -29,11 +29,17 @@
         <div id="config-screen" class="screen active">
             <h2>Set Away Time</h2>
 
-            <div class="duration-grid">
-                <div class="duration-card" data-duration="15">15m</div>
-                <div class="duration-card" data-duration="30">30m</div>
-                <div class="duration-card" data-duration="45">45m</div>
-                <div class="duration-card" data-duration="60">60m</div>
+            <div class="duration-row">
+                <div class="duration-grid">
+                    <div class="duration-card" data-duration="15">15m</div>
+                    <div class="duration-card" data-duration="30">30m</div>
+                    <div class="duration-card" data-duration="45">45m</div>
+                    <div class="duration-card" data-duration="60">60m</div>
+                </div>
+                <div id="custom-duration-card" class="duration-card custom-card">
+                    <span class="custom-card-icon">+</span>
+                    <span class="custom-card-label">Custom</span>
+                </div>
             </div>
 
             <div class="input-group">
@@ -57,6 +63,22 @@
             <div id="timer-display">00:00</div>
             <div id="timer-notes"></div>
             <button id="stop-button" class="btn-danger">Stop</button>
+        </div>
+    </div>
+
+    <!-- Custom Duration Picker Modal -->
+    <div id="custom-timer-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h3>Custom Duration</h3>
+            <div class="picker-wheel">
+                <div class="picker-highlight"></div>
+                <div class="picker-column" id="minutes-picker"></div>
+            </div>
+            <div class="picker-unit-label">minutes</div>
+            <div class="modal-actions">
+                <button id="custom-cancel-button" class="btn-secondary">Cancel</button>
+                <button id="custom-confirm-button" class="btn-primary">Set</button>
+            </div>
         </div>
     </div>
 

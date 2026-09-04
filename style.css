@@ -192,13 +192,39 @@ h2 {
 }
 
 /* Config Screen */
-.duration-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+.duration-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 1.5rem;
   width: 100%;
   max-width: 600px;
   margin-bottom: 2rem;
+}
+
+.duration-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  flex: 2;
+}
+
+.custom-card {
+  flex: 1;
+  height: 120px;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.custom-card-icon {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.custom-card-label {
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .duration-card {
@@ -332,6 +358,123 @@ textarea:focus {
   opacity: 0.9;
 }
 
+.btn-secondary {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 2px solid #e5e7eb;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  flex: 1;
+}
+
+.btn-secondary:active {
+  background-color: #e5e7eb;
+}
+
+/* Custom Duration Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-card {
+  background: var(--surface-color);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  width: 90%;
+  max-width: 320px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-card h3 {
+  margin: 0 0 1.5rem;
+  color: var(--text-main);
+}
+
+.picker-wheel {
+  position: relative;
+  width: 140px;
+  height: 168px;
+  /* 3.5 items tall so the middle one centers at 84px */
+  overflow: hidden;
+}
+
+.picker-highlight {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  border-top: 2px solid var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  pointer-events: none;
+}
+
+.picker-column {
+  height: 168px;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  padding: 60px 0;
+  /* pad so first/last items can center */
+  scrollbar-width: none;
+}
+
+.picker-column::-webkit-scrollbar {
+  display: none;
+}
+
+.picker-item {
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  scroll-snap-align: center;
+  transition: color 0.15s, transform 0.15s;
+}
+
+.picker-item.picker-item-selected {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.picker-unit-label {
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.modal-actions .btn-primary {
+  width: auto;
+  flex: 1;
+  padding: 0.9rem 1.5rem;
+  font-size: 1rem;
+}
+
 /* Timer Screen */
 #timer-display {
   font-size: 12rem;
@@ -357,6 +500,7 @@ textarea:focus {
 @media (orientation: landscape) {
   .duration-grid {
     grid-template-columns: repeat(4, 1fr);
+    flex: 4;
   }
 }
 
